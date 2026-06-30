@@ -1,0 +1,1137 @@
+Znasz Allegro tewrzymy wlasne allegro w githubie przezl ink zaynczjacy se na https:// i jest tak mozna szukac itp. jest moj koszyc moje zamownienia historia i chce funckje jak allegro np profil i w nim jest 10 sekcji i jedna z nick to Moje zakupy i tam sa zakupy tez historja ale na samej gorze sa zamawiane i tsa mjak wejde w jakas sie pokazuja  moje dane ktore podowalem jaki adres domu numer telfonu kod podcztowy itp. to jak OLX se przywaza do domu i jest napisane Zakup opłacony kolejne Oczekuje na nadanie kolojne  W drodze i koljne Odbierz PRzesyłke i jak odbiore Przesyłka odebrana w moje allegro pod moje zakupy jest Moje paczki marcinoxshop i tam sie pokazuje paczki ktore wstawilem i moge zmieniack iedy np. Oczukuje na dnadanie odebrano itp.  i w tworzeniu najwazniesjze zabezpieczenia dowodu na samym dole jesli mam cpzatyku lub nie mam pisze Stworz wlasna paczke i tam jest Imię nazwisko Adres firmy jesli to nie firma do wybiera sie Osobiscie dom nie podaje sie adresu   Numer telefonu I NAJWAZNIEJSZE Kod Przelewy24 z tad biezemy Blik paypal itp. wtedy jak   podam wsyzstkie artykuly i klikne dalej pokazuje sie co wybrac z wybranych id Do placenia moge wszystkie ale minimum 2 blik to 1 najwazniejsze jak nie wybiore nie przejde dalej I  potem inne jak sie uda klikam Dalej i sie pokazuje Nazwa paczaki zdjecia paczki max 20 Opis paczki  i potem dalej i jest paczka  na ansyzm marcinoxshop i dodaj zglaszanie kupowanie paczek  kupowania najwazniejsze  i wgl dodaj rejestracje ilogowanie aby kupic paczke i dodaj po odswiezeniu strony dane poprawaacja Locals torage i dodaj P2P u wszystkiego uzywamy silika aby np telefon z PC sie polczyc czy cos i jak chce kupic pokazuje  sie adres domu NR telefonu i klika sie dalej potem przenosi do tego przelewy24 isi e wybiera forme platnosci potem jak zaplaca wracam do amarcinoxshop i bez skamu bez lagow jak odswieze strone czy blad do odrazu sie dodaje jak potwiedze w banku i pacza Okpupiona  idodaj naprawde 0 skamu teaz Admin permission jak w linku wpisze na gorze na konuc linku wpisze #7319112 na azwsze na aktualne konto dostaje Admin Permission przy moich paczkach itp zawsze sie pokazuje Administrator Of marcinoxshop i znaczek zweryfikowanego  jak najadzie na nick a znaczek na koncu nicku i wtedy jak wejde w jakas paczke pokazuje sie przycisk usun paczke zbanuj wysylacjego paczka zbanuj na czas wysylajacego paczka i tam podaje pwood a jak timeban to powod i czas lub Zobacz raporty i tam sie pokazuje wtedy np. 1 4 powiadomienia i i opis i to chyba wszystko lecisz .html i najwaznejesze bezpieczonstwo przy tworzeniu paczki  i kiedy chce juz otwrzyc idzie do administracji wtedy w lewym gornym rogu admin tylko ma zweryfikuj paczki i sie werefikuje najwazniejszy etap werefikacji przez skamem i wgl sie podaje tez cene<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>marcinoxshop - Twoje zakupy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        allegro: '#ff5a00',
+                        allegroDark: '#cc4800',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Ukrywanie scrollbara dla estetyki w modalu zdjęć */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .toast {
+            transition: all 0.3s ease-in-out;
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded shadow-lg hidden">
+        <span id="toastMsg">Sukces!</span>
+    </div>
+
+    <!-- Navbar -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="navigate('home')">
+                    <span class="text-allegro text-2xl font-bold tracking-tighter">marcinox<span class="text-gray-800">shop</span></span>
+                </div>
+                
+                <!-- Search -->
+                <div class="flex-1 max-w-2xl mx-8 hidden md:block">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Czego szukasz?" class="w-full border-2 border-allegro rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-allegroDark">
+                        <button onclick="searchProducts()" class="absolute right-0 top-0 mt-2 mr-4 text-allegro">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Icons -->
+                <div class="flex items-center space-x-6">
+                    <!-- Admin Panel Link (Hidden default) -->
+                    <button id="adminNavBtn" onclick="navigate('admin')" class="hidden text-red-600 hover:text-red-800 flex flex-col items-center">
+                        <i class="fas fa-shield-halved text-xl"></i>
+                        <span class="text-xs">Admin</span>
+                    </button>
+
+                    <button onclick="navigate('create')" class="text-gray-600 hover:text-allegro flex flex-col items-center">
+                        <i class="fas fa-plus-circle text-xl"></i>
+                        <span class="text-xs">Wystaw</span>
+                    </button>
+                    <button id="authNavBtn" onclick="toggleAuth()" class="text-gray-600 hover:text-allegro flex flex-col items-center">
+                        <i class="fas fa-user text-xl"></i>
+                        <span id="authNavText" class="text-xs">Zaloguj</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="mainContent" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- ================= VIEW: HOME ================= -->
+        <section id="view-home" class="view-section">
+            <h2 class="text-2xl font-bold mb-6">Polecane dla Ciebie</h2>
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Products injected here -->
+            </div>
+        </section>
+
+        <!-- ================= VIEW: AUTH (Login/Register) ================= -->
+        <section id="view-auth" class="view-section hidden max-w-md mx-auto bg-white p-8 rounded-lg shadow">
+            <h2 id="authTitle" class="text-2xl font-bold mb-6 text-center">Logowanie</h2>
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Login / Nick</label>
+                    <input type="text" id="authUsername" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-allegro">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Hasło</label>
+                    <input type="password" id="authPassword" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-allegro">
+                </div>
+                <button type="submit" class="bg-allegro hover:bg-allegroDark text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">
+                    <span id="authBtnText">Zaloguj się</span>
+                </button>
+            </form>
+            <div class="mt-4 text-center">
+                <a href="#" onclick="switchAuthMode()" class="text-sm text-allegro hover:underline" id="authSwitchText">Nie masz konta? Zarejestruj się</a>
+            </div>
+        </section>
+
+        <!-- ================= VIEW: PROFILE ================= -->
+        <section id="view-profile" class="view-section hidden">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Sidebar (10 sekcji) -->
+                <div class="w-full md:w-1/4 bg-white rounded-lg shadow p-4">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-2 flex items-center justify-center text-3xl text-gray-500">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 id="profileUsername" class="font-bold text-lg flex items-center justify-center gap-2">
+                            User
+                            <!-- Verified badge injected via JS if admin -->
+                        </h3>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li><button onclick="setProfileTab('zakupy')" id="tab-zakupy" class="w-full text-left p-2 rounded hover:bg-gray-100 font-bold text-allegro">Moje zakupy</button></li>
+                        <li><button onclick="setProfileTab('paczki')" id="tab-paczki" class="w-full text-left p-2 rounded hover:bg-gray-100">Moje paczki marcinoxshop</button></li>
+                        <li><button class="w-full text-left p-2 rounded hover:bg-gray-100 text-gray-400 cursor-not-allowed">Dane konta</button></li>
+                        <li><button class="w-full text-left p-2 rounded hover:bg-gray-100 text-gray-400 cursor-not-allowed">Adresy dostawy</button></li>
+                        <li><button class="w-full text-left p-2 rounded hover:bg-gray-100 text-gray-400 cursor-not-allowed">Monety i kupony</button></li>
+                        <li><button class="w-full text-left p-2 rounded hover:bg-gray-100 text-gray-400 cursor-not-allowed">Oceny i komentarze</button></li>
+                        <li><button class="w-full text-left p-2 rounded hover:bg-gray-100 text-gray-400 cursor-not-allowed">Wiadomości</button></li>
+                        <li><button class="w-full text-left p-2 rounded hover:bg-gray-100 text-gray-400 cursor-not-allowed">Zwroty</button></li>
+                        <li><button class="w-full text-left p-2 rounded hover:bg-gray-100 text-gray-400 cursor-not-allowed">Ustawienia</button></li>
+                        <li><button onclick="logout()" class="w-full text-left p-2 rounded hover:bg-red-50 text-red-600 mt-4 border-t">Wyloguj się</button></li>
+                    </ul>
+                </div>
+
+                <!-- Profile Content -->
+                <div class="w-full md:w-3/4">
+                    <!-- Tab: Moje Zakupy -->
+                    <div id="profile-content-zakupy" class="bg-white rounded-lg shadow p-6 profile-tab-content">
+                        <h2 class="text-2xl font-bold mb-4 border-b pb-2">Moje zakupy</h2>
+                        <div id="myPurchasesList" class="space-y-4">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab: Moje Paczki (Sprzedaż) -->
+                    <div id="profile-content-paczki" class="bg-white rounded-lg shadow p-6 profile-tab-content hidden">
+                        <h2 class="text-2xl font-bold mb-4 border-b pb-2">Moje paczki marcinoxshop</h2>
+                        <div id="myPackagesList" class="space-y-4">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW: CREATE PACKAGE ================= -->
+        <section id="view-create" class="view-section hidden max-w-3xl mx-auto bg-white p-8 rounded-lg shadow">
+            <h2 class="text-2xl font-bold mb-6 border-b pb-2">Stwórz własną paczkę</h2>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                <p class="text-sm text-blue-700"><b>Zabezpieczenie przed scamem:</b> Każda utworzona paczka trafia do poczekalni. Administracja weryfikuje ją przed publikacją.</p>
+            </div>
+            
+            <form id="createPackageForm" onsubmit="handleCreatePackage(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Kolumna 1: Dane paczki -->
+                    <div>
+                        <h3 class="font-bold mb-4 text-gray-700">1. Informacje o przedmiocie</h3>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold mb-2">Nazwa paczki</label>
+                            <input type="text" id="cpName" required class="w-full border rounded p-2 focus:ring-allegro focus:border-allegro">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold mb-2">Opis paczki</label>
+                            <textarea id="cpDesc" rows="4" required class="w-full border rounded p-2 focus:ring-allegro focus:border-allegro"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold mb-2">Cena (PLN)</label>
+                            <input type="number" id="cpPrice" min="1" step="0.01" required class="w-full border rounded p-2 focus:ring-allegro focus:border-allegro">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold mb-2">Zdjęcia (Max 20)</label>
+                            <p class="text-xs text-gray-500 mb-2">System lokalny: Dodaj jedno URL reprezentatywne</p>
+                            <input type="url" id="cpImage" placeholder="https://..." value="https://placehold.co/400x400?text=Paczka" class="w-full border rounded p-2">
+                        </div>
+                    </div>
+
+                    <!-- Kolumna 2: Dane wysyłającego i Płatności -->
+                    <div>
+                        <h3 class="font-bold mb-4 text-gray-700">2. Dane i Płatności (Przelewy24)</h3>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold mb-2">Typ podmiotu</label>
+                            <select id="cpType" class="w-full border rounded p-2" onchange="toggleAddressField()">
+                                <option value="osoba">Osobiście (Dom - brak adresu w systemie)</option>
+                                <option value="firma">Adres Firmy</option>
+                            </select>
+                        </div>
+                        <div id="companyAddressDiv" class="mb-4 hidden">
+                            <label class="block text-sm font-bold mb-2">Adres Firmy</label>
+                            <input type="text" id="cpAddress" class="w-full border rounded p-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold mb-2">Imię i Nazwisko</label>
+                            <input type="text" id="cpFullName" required class="w-full border rounded p-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold mb-2">Numer telefonu</label>
+                            <input type="tel" id="cpPhone" required pattern="[0-9]{9}" placeholder="123456789" class="w-full border rounded p-2">
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 border rounded mt-6">
+                            <h4 class="font-bold text-sm mb-2 text-green-700"><i class="fas fa-shield-alt"></i> Konfiguracja Przelewy24</h4>
+                            <div class="mb-3">
+                                <label class="block text-xs font-bold mb-1">Kod Integracji P24</label>
+                                <input type="text" id="cpP24Code" required placeholder="np. P24-88A9..." class="w-full border rounded p-2 text-sm">
+                            </div>
+                            <div class="mb-2">
+                                <span class="block text-xs font-bold mb-1">Wymagane formy płatności (min. 2):</span>
+                                <label class="flex items-center text-sm mb-1 text-gray-500">
+                                    <input type="checkbox" checked disabled class="mr-2"> BLIK (Wymagane systemowo)
+                                </label>
+                                <label class="flex items-center text-sm mb-1">
+                                    <input type="checkbox" id="cpPayPaypal" class="mr-2"> PayPal
+                                </label>
+                                <label class="flex items-center text-sm mb-1">
+                                    <input type="checkbox" id="cpPayCard" class="mr-2"> Karta Płatnicza
+                                </label>
+                                <label class="flex items-center text-sm">
+                                    <input type="checkbox" id="cpPayTransfer" class="mr-2"> Przelew Tradycyjny
+                                </label>
+                            </div>
+                            <p id="paymentError" class="text-xs text-red-500 hidden mt-1">Musisz wybrać BLIK oraz minimum 1 dodatkową formę!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end border-t pt-4">
+                    <button type="submit" class="bg-allegro hover:bg-allegroDark text-white font-bold py-3 px-8 rounded-lg text-lg">
+                        Dalej (Zgłoś do weryfikacji)
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- ================= VIEW: PRODUCT DETAILS ================= -->
+        <section id="view-product" class="view-section hidden max-w-5xl mx-auto bg-white p-6 rounded-lg shadow">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Image -->
+                <div class="w-full md:w-1/2">
+                    <img id="detailImg" src="" alt="Product" class="w-full h-96 object-cover rounded-lg border">
+                </div>
+                <!-- Info -->
+                <div class="w-full md:w-1/2 flex flex-col">
+                    <div class="flex justify-between items-start">
+                        <h1 id="detailTitle" class="text-3xl font-bold mb-2">Tytuł</h1>
+                        <button onclick="openReportModal()" class="text-red-500 hover:text-red-700 text-sm flex flex-col items-center">
+                            <i class="fas fa-flag"></i> Zgłoś
+                        </button>
+                    </div>
+                    
+                    <p id="detailSeller" class="text-sm text-gray-500 mb-4 flex items-center gap-2">Sprzedawca: <span></span></p>
+                    <div class="text-4xl font-bold text-gray-800 mb-6" id="detailPrice">0,00 zł</div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-6 text-sm">
+                        <p class="font-bold mb-2"><i class="fas fa-truck text-allegro"></i> Dostawa z marcinoxshop</p>
+                        <p>Kupujesz bezpiecznie. Chroni Cię program ochrony kupujących.</p>
+                    </div>
+
+                    <div class="mb-6 flex-grow">
+                        <h3 class="font-bold text-lg mb-2">Opis:</h3>
+                        <p id="detailDesc" class="text-gray-700 whitespace-pre-wrap"></p>
+                    </div>
+
+                    <button id="btnBuyNow" class="w-full bg-allegro hover:bg-allegroDark text-white font-bold py-4 rounded-lg text-xl shadow-lg mt-auto">
+                        Kup Teraz
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW: CHECKOUT / PAYMENT (P24) ================= -->
+        <section id="view-checkout" class="view-section hidden max-w-2xl mx-auto bg-white p-8 rounded-lg shadow">
+            <h2 class="text-2xl font-bold mb-6 text-center border-b pb-4">Kasa - marcinoxshop</h2>
+            
+            <div id="checkoutStep1">
+                <h3 class="font-bold text-lg mb-4">Podaj dane do wysyłki</h3>
+                <div class="space-y-4 mb-6">
+                    <input type="text" id="chkName" placeholder="Imię i Nazwisko" class="w-full border rounded p-2">
+                    <input type="text" id="chkAddress" placeholder="Ulica i numer domu/mieszkania" class="w-full border rounded p-2">
+                    <input type="text" id="chkZip" placeholder="Kod pocztowy (np. 00-000)" class="w-full border rounded p-2">
+                    <input type="text" id="chkCity" placeholder="Miasto" class="w-full border rounded p-2">
+                    <input type="tel" id="chkPhone" placeholder="Numer telefonu" class="w-full border rounded p-2">
+                </div>
+                <button onclick="goToPayment()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded text-lg">
+                    Dalej -> Wybierz płatność
+                </button>
+            </div>
+
+            <!-- Fake Przelewy 24 Modal/Area -->
+            <div id="checkoutStep2" class="hidden">
+                <div class="bg-gradient-to-r from-gray-800 to-gray-700 rounded-t-lg p-4 text-white flex justify-between items-center">
+                    <span class="font-bold text-xl">Przelewy24</span>
+                    <span class="text-sm">Do zapłaty: <b id="p24Price">0,00 zł</b></span>
+                </div>
+                <div class="border border-t-0 rounded-b-lg p-6 bg-gray-50">
+                    <h3 class="font-bold mb-4 text-center">Wybierz metodę płatności</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-6" id="paymentMethodsContainer">
+                        <!-- BLIK is always there -->
+                        <button onclick="selectBlik()" class="border-2 border-gray-200 p-4 rounded hover:border-black flex flex-col items-center justify-center bg-white transition">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Blik_logo.svg/1200px-Blik_logo.svg.png" alt="BLIK" class="h-8 mb-2">
+                            <span class="font-bold text-sm">BLIK</span>
+                        </button>
+                        <!-- Injected by JS based on seller settings -->
+                    </div>
+
+                    <div id="blikArea" class="hidden text-center mt-6 p-4 border-t">
+                        <p class="font-bold mb-2">Wpisz kod BLIK z aplikacji bankowej</p>
+                        <input type="text" id="blikCode" maxlength="6" class="text-center text-2xl tracking-[0.5em] border-b-2 border-black w-48 py-2 focus:outline-none bg-transparent font-mono mb-4">
+                        <button onclick="simulateBankConfirm()" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-3 rounded mt-2">
+                            Płacę
+                        </button>
+                    </div>
+
+                    <div id="bankConfirmArea" class="hidden text-center mt-6 p-8">
+                        <i class="fas fa-spinner fa-spin text-4xl text-blue-500 mb-4"></i>
+                        <h3 class="font-bold text-lg">Oczekiwanie na potwierdzenie...</h3>
+                        <p class="text-sm text-gray-500 mt-2">Potwierdź płatność w aplikacji bankowej na swoim telefonie.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW: ADMIN PANEL ================= -->
+        <section id="view-admin" class="view-section hidden max-w-6xl mx-auto">
+            <div class="bg-red-600 text-white p-6 rounded-lg shadow-lg mb-8 flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold"><i class="fas fa-shield-halved"></i> Panel Administratora</h1>
+                    <p>Witaj, Administratorze marcinoxshop. Masz pełnię władzy.</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-white text-red-600 font-bold px-3 py-1 rounded-full text-sm">Zaufany</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Weryfikacja Paczek -->
+                <div class="bg-white rounded-lg shadow p-6 border-t-4 border-yellow-500">
+                    <h2 class="text-xl font-bold mb-4"><i class="fas fa-clock text-yellow-500"></i> Weryfikuj paczki (Poczekalnia)</h2>
+                    <div id="adminPendingQueue" class="space-y-4 max-h-96 overflow-y-auto">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Raporty i Bazy -->
+                <div class="bg-white rounded-lg shadow p-6 border-t-4 border-red-500">
+                    <h2 class="text-xl font-bold mb-4"><i class="fas fa-flag text-red-500"></i> Zobacz raporty (Zgłoszenia)</h2>
+                    <div id="adminReportsQueue" class="space-y-4 max-h-96 overflow-y-auto">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: Zgłoś -->
+    <div id="reportModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4 text-red-600">Zgłoś naruszenie</h3>
+            <p class="text-sm mb-4">Dlaczego zgłaszasz tę paczkę?</p>
+            <select id="reportReason" class="w-full border rounded p-2 mb-4">
+                <option value="scam">Podejrzenie oszustwa (Scam)</option>
+                <option value="fake">Podróbka</option>
+                <option value="rules">Niezgodne z regulaminem</option>
+            </select>
+            <textarea id="reportDesc" placeholder="Opisz problem (opcjonalnie)" class="w-full border rounded p-2 mb-4" rows="3"></textarea>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeReportModal()" class="px-4 py-2 border rounded text-gray-600 hover:bg-gray-100">Anuluj</button>
+                <button onclick="submitReport()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Wyślij Zgłoszenie</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Admin Ban User -->
+    <div id="banModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md border-t-4 border-red-600">
+            <h3 class="text-xl font-bold mb-4 text-red-600">Banowanie Użytkownika</h3>
+            <p class="text-sm font-bold mb-2" id="banTargetUser">User: -</p>
+            
+            <div class="mb-4">
+                <label class="block text-sm mb-1">Typ Bana</label>
+                <select id="banType" class="w-full border rounded p-2" onchange="toggleBanTime()">
+                    <option value="perm">Zbanuj permanentnie</option>
+                    <option value="time">Zbanuj na czas (Timeban)</option>
+                </select>
+            </div>
+            
+            <div id="banTimeDiv" class="mb-4 hidden">
+                <label class="block text-sm mb-1">Czas (w dniach)</label>
+                <input type="number" id="banDays" min="1" value="7" class="w-full border rounded p-2">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm mb-1">Powód</label>
+                <input type="text" id="banReason" placeholder="np. Oszustwo" class="w-full border rounded p-2">
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button onclick="closeBanModal()" class="px-4 py-2 border rounded text-gray-600 hover:bg-gray-100">Anuluj</button>
+                <button onclick="executeBan()" class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">Wykonaj Wyrok</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // BAZA DANYCH W LOCAL STORAGE (P2P SYNC SYMULACJA)
+        // ==========================================
+        const DB_KEY = 'marcinoxshop_db';
+
+        const DEFAULT_DB = {
+            users: [], // {id, username, password, isAdmin, isBanned, banReason}
+            products: [], // {id, title, desc, price, image, sellerId, status: 'pending'|'active'|'sold', p24Config: {}, tracking: 'none'|'paid'|'pending_shipment'|'in_transit'|'pickup_ready'|'delivered', buyerId: null, buyerDetails: null}
+            reports: [] // {id, productId, reporterId, reason, desc, date}
+        };
+
+        let db = JSON.parse(localStorage.getItem(DB_KEY));
+        if (!db) {
+            db = DEFAULT_DB;
+            saveDb();
+        }
+
+        let currentUser = JSON.parse(sessionStorage.getItem('mox_user')) || null;
+        let currentView = 'home';
+        let activeProductId = null;
+        let activeReportTarget = null;
+        let activeBanTarget = null;
+
+        // P2P / Cross-tab synchronization
+        window.addEventListener('storage', (e) => {
+            if(e.key === DB_KEY) {
+                db = JSON.parse(e.newValue);
+                refreshCurrentView();
+            }
+        });
+
+        function saveDb() {
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
+            // Trigger storage event manually for current window just in case
+            window.dispatchEvent(new Event('localDbChanged'));
+        }
+
+        window.addEventListener('localDbChanged', refreshCurrentView);
+
+        // ==========================================
+        // INICJALIZACJA I SPRAWDZANIE ADMINA (#7319112)
+        // ==========================================
+        window.onload = () => {
+            checkAdminHash();
+            updateNavbar();
+            navigate('home');
+        };
+
+        function checkAdminHash() {
+            if (window.location.hash === '#7319112' && currentUser) {
+                // Grant admin
+                const uIndex = db.users.findIndex(u => u.id === currentUser.id);
+                if(uIndex > -1) {
+                    db.users[uIndex].isAdmin = true;
+                    saveDb();
+                    currentUser.isAdmin = true;
+                    sessionStorage.setItem('mox_user', JSON.stringify(currentUser));
+                    showToast("Uprawnienia Administratora przyznane!", "bg-blue-600");
+                    // remove hash to clean URL
+                    history.replaceState(null, null, ' ');
+                }
+            } else if (window.location.hash === '#7319112' && !currentUser) {
+                showToast("Zaloguj się najpierw, aby użyć kodu admina.", "bg-red-500");
+            }
+        }
+
+        // ==========================================
+        // NAWIGACJA
+        // ==========================================
+        function navigate(view, params = {}) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            
+            // Auth Guards
+            if(['create', 'profile', 'checkout'].includes(view) && !currentUser) {
+                showToast("Musisz się zalogować", "bg-red-500");
+                view = 'auth';
+            }
+            if(view === 'admin' && (!currentUser || !currentUser.isAdmin)) {
+                showToast("Brak uprawnień!", "bg-red-500");
+                view = 'home';
+            }
+
+            // Show selected view
+            const viewEl = document.getElementById(`view-${view}`);
+            if(viewEl) viewEl.classList.remove('hidden');
+            currentView = view;
+            window.scrollTo(0,0);
+
+            // View specific logic
+            if(view === 'home') renderHome();
+            if(view === 'profile') renderProfile();
+            if(view === 'admin') renderAdmin();
+            if(view === 'product') renderProduct(params.id);
+            if(view === 'checkout') renderCheckout(params.id);
+        }
+
+        function refreshCurrentView() {
+            if(currentView === 'home') renderHome();
+            if(currentView === 'profile') renderProfile();
+            if(currentView === 'admin') renderAdmin();
+            if(currentView === 'product' && activeProductId) renderProduct(activeProductId);
+        }
+
+        // ==========================================
+        // UI HELPERS
+        // ==========================================
+        function showToast(msg, bgClass = "bg-green-500") {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toastMsg');
+            toast.className = `toast fixed top-4 right-4 z-50 text-white px-6 py-3 rounded shadow-lg ${bgClass}`;
+            msgEl.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function updateNavbar() {
+            const authText = document.getElementById('authNavText');
+            const authBtn = document.getElementById('authNavBtn');
+            const adminBtn = document.getElementById('adminNavBtn');
+
+            if (currentUser) {
+                authText.innerText = 'Profil';
+                authBtn.onclick = () => navigate('profile');
+                if(currentUser.isAdmin) {
+                    adminBtn.classList.remove('hidden');
+                } else {
+                    adminBtn.classList.add('hidden');
+                }
+            } else {
+                authText.innerText = 'Zaloguj';
+                authBtn.onclick = () => navigate('auth');
+                adminBtn.classList.add('hidden');
+            }
+        }
+
+        function getVerifiedBadge(user) {
+            if(user && user.isAdmin) {
+                return `<i class="fas fa-check-circle text-blue-500 ml-1" title="Administrator Of marcinoxshop"></i>`;
+            }
+            return '';
+        }
+
+        function formatPrice(num) {
+            return parseFloat(num).toFixed(2).replace('.', ',') + ' zł';
+        }
+
+        // ==========================================
+        // AUTHENTICATION
+        // ==========================================
+        let isLoginMode = true;
+
+        function toggleAuth() { navigate(currentUser ? 'profile' : 'auth'); }
+
+        function switchAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('authTitle').innerText = isLoginMode ? 'Logowanie' : 'Rejestracja';
+            document.getElementById('authBtnText').innerText = isLoginMode ? 'Zaloguj się' : 'Utwórz konto';
+            document.getElementById('authSwitchText').innerText = isLoginMode ? 'Nie masz konta? Zarejestruj się' : 'Masz konto? Zaloguj się';
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const user = document.getElementById('authUsername').value.trim();
+            const pass = document.getElementById('authPassword').value;
+
+            if (isLoginMode) {
+                const found = db.users.find(u => u.username === user && u.password === pass);
+                if (found) {
+                    if (found.isBanned) {
+                        showToast(`Konto zbanowane! Powód: ${found.banReason}`, "bg-red-600");
+                        return;
+                    }
+                    loginSuccess(found);
+                } else {
+                    showToast('Błędne dane logowania!', 'bg-red-500');
+                }
+            } else {
+                if (db.users.find(u => u.username === user)) {
+                    showToast('Taki użytkownik już istnieje!', 'bg-red-500');
+                    return;
+                }
+                const newUser = { id: Date.now().toString(), username: user, password: pass, isAdmin: false };
+                db.users.push(newUser);
+                saveDb();
+                loginSuccess(newUser);
+                showToast('Konto utworzone!');
+            }
+        }
+
+        function loginSuccess(user) {
+            currentUser = user;
+            sessionStorage.setItem('mox_user', JSON.stringify(currentUser));
+            updateNavbar();
+            document.getElementById('authForm').reset();
+            checkAdminHash(); // check if they logged in with hash in URL
+            navigate('home');
+        }
+
+        function logout() {
+            currentUser = null;
+            sessionStorage.removeItem('mox_user');
+            updateNavbar();
+            navigate('home');
+            showToast('Wylogowano');
+        }
+
+        // ==========================================
+        // HOME & SEARCH
+        // ==========================================
+        function renderHome(searchQuery = '') {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            let products = db.products.filter(p => p.status === 'active');
+            
+            if(searchQuery) {
+                products = products.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()));
+            }
+
+            if (products.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">Brak aktywnych paczek do wyświetlenia.</p>`;
+                return;
+            }
+
+            products.forEach(p => {
+                const seller = db.users.find(u => u.id === p.sellerId);
+                const badge = getVerifiedBadge(seller);
+                
+                grid.innerHTML += `
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition cursor-pointer overflow-hidden flex flex-col" onclick="navigate('product', {id: '${p.id}'})">
+                        <img src="${p.image}" alt="${p.title}" class="w-full h-48 object-cover">
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="font-bold text-gray-800 line-clamp-2 mb-1">${p.title}</h3>
+                            <p class="text-xs text-gray-500 mb-2">od: ${seller ? seller.username : 'Nieznany'} ${badge}</p>
+                            <div class="mt-auto text-xl font-bold text-allegro">${formatPrice(p.price)}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function searchProducts() {
+            const query = document.getElementById('searchInput').value;
+            renderHome(query);
+        }
+
+        // ==========================================
+        // CREATE PACKAGE (Sprzedaż)
+        // ==========================================
+        function toggleAddressField() {
+            const type = document.getElementById('cpType').value;
+            const div = document.getElementById('companyAddressDiv');
+            if(type === 'firma') {
+                div.classList.remove('hidden');
+            } else {
+                div.classList.add('hidden');
+                document.getElementById('cpAddress').value = '';
+            }
+        }
+
+        function handleCreatePackage(e) {
+            e.preventDefault();
+            
+            // Walidacja platnosci
+            const isPaypal = document.getElementById('cpPayPaypal').checked;
+            const isCard = document.getElementById('cpPayCard').checked;
+            const isTransfer = document.getElementById('cpPayTransfer').checked;
+            
+            if(!isPaypal && !isCard && !isTransfer) {
+                document.getElementById('paymentError').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('paymentError').classList.add('hidden');
+
+            const newProduct = {
+                id: 'P' + Date.now(),
+                title: document.getElementById('cpName').value,
+                desc: document.getElementById('cpDesc').value,
+                price: parseFloat(document.getElementById('cpPrice').value),
+                image: document.getElementById('cpImage').value || 'https://placehold.co/400x400?text=Brak+Zdjecia',
+                sellerId: currentUser.id,
+                status: 'pending', // VERY IMPORTANT: Security verification
+                tracking: 'none',
+                buyerId: null,
+                p24Config: {
+                    code: document.getElementById('cpP24Code').value,
+                    paypal: isPaypal,
+                    card: isCard,
+                    transfer: isTransfer
+                },
+                sellerDetails: {
+                    type: document.getElementById('cpType').value,
+                    address: document.getElementById('cpAddress').value,
+                    name: document.getElementById('cpFullName').value,
+                    phone: document.getElementById('cpPhone').value
+                }
+            };
+
+            db.products.push(newProduct);
+            saveDb();
+            document.getElementById('createPackageForm').reset();
+            toggleAddressField();
+            showToast('Paczka zgłoszona! Oczekuje na weryfikację przez Administrację.', 'bg-blue-500');
+            navigate('profile');
+            setProfileTab('paczki');
+        }
+
+        // ==========================================
+        // PRODUCT DETAILS
+        // ==========================================
+        function renderProduct(id) {
+            const p = db.products.find(x => x.id === id);
+            if(!p) { navigate('home'); return; }
+            activeProductId = id;
+
+            document.getElementById('detailImg').src = p.image;
+            document.getElementById('detailTitle').innerText = p.title;
+            document.getElementById('detailPrice').innerText = formatPrice(p.price);
+            document.getElementById('detailDesc').innerText = p.desc;
+            
+            const seller = db.users.find(u => u.id === p.sellerId);
+            document.getElementById('detailSeller').innerHTML = `Sprzedawca: <span class="font-bold">${seller ? seller.username : 'Zbanowany'}</span> ${getVerifiedBadge(seller)}`;
+
+            const btn = document.getElementById('btnBuyNow');
+            if (p.status === 'sold') {
+                btn.innerText = 'Przedmiot Sprzedany';
+                btn.className = 'w-full bg-gray-400 text-white font-bold py-4 rounded-lg text-xl shadow-lg mt-auto cursor-not-allowed';
+                btn.onclick = null;
+            } else if (p.sellerId === (currentUser ? currentUser.id : null)) {
+                btn.innerText = 'To Twoja paczka';
+                btn.className = 'w-full bg-gray-200 text-gray-500 font-bold py-4 rounded-lg text-xl mt-auto cursor-not-allowed';
+                btn.onclick = null;
+            } else {
+                btn.innerText = 'Kup Teraz';
+                btn.className = 'w-full bg-allegro hover:bg-allegroDark text-white font-bold py-4 rounded-lg text-xl shadow-lg mt-auto';
+                btn.onclick = () => navigate('checkout', {id: p.id});
+            }
+        }
+
+        // ==========================================
+        // CHECKOUT & PAYMENT FLOW
+        // ==========================================
+        function renderCheckout(id) {
+            const p = db.products.find(x => x.id === id);
+            if(!p || p.status !== 'active') { showToast('Niedostępne', 'bg-red-500'); navigate('home'); return; }
+            activeProductId = id;
+
+            document.getElementById('checkoutStep1').classList.remove('hidden');
+            document.getElementById('checkoutStep2').classList.add('hidden');
+            document.getElementById('p24Price').innerText = formatPrice(p.price);
+
+            // Populate payment methods based on seller config
+            const container = document.getElementById('paymentMethodsContainer');
+            // Keep blik
+            container.innerHTML = `
+                <button onclick="selectBlik()" class="border-2 border-gray-200 p-4 rounded hover:border-black flex flex-col items-center justify-center bg-white transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Blik_logo.svg/1200px-Blik_logo.svg.png" alt="BLIK" class="h-8 mb-2">
+                    <span class="font-bold text-sm">BLIK</span>
+                </button>
+            `;
+            if(p.p24Config.paypal) container.innerHTML += `<div class="border-2 border-gray-200 p-4 rounded flex flex-col items-center justify-center bg-white opacity-50 cursor-not-allowed"><i class="fab fa-paypal text-3xl mb-2 text-blue-700"></i><span class="font-bold text-sm">PayPal (Konserwacja)</span></div>`;
+            if(p.p24Config.card) container.innerHTML += `<div class="border-2 border-gray-200 p-4 rounded flex flex-col items-center justify-center bg-white opacity-50 cursor-not-allowed"><i class="fas fa-credit-card text-3xl mb-2 text-gray-700"></i><span class="font-bold text-sm">Karta (Konserwacja)</span></div>`;
+            if(p.p24Config.transfer) container.innerHTML += `<div class="border-2 border-gray-200 p-4 rounded flex flex-col items-center justify-center bg-white opacity-50 cursor-not-allowed"><i class="fas fa-university text-3xl mb-2 text-gray-700"></i><span class="font-bold text-sm">Przelew (Konserwacja)</span></div>`;
+        }
+
+        function goToPayment() {
+            const name = document.getElementById('chkName').value;
+            const address = document.getElementById('chkAddress').value;
+            const phone = document.getElementById('chkPhone').value;
+            if(!name || !address || !phone) {
+                showToast("Wypełnij wymagane dane do wysyłki!", "bg-red-500");
+                return;
+            }
+            document.getElementById('checkoutStep1').classList.add('hidden');
+            document.getElementById('checkoutStep2').classList.remove('hidden');
+        }
+
+        function selectBlik() {
+            document.getElementById('paymentMethodsContainer').classList.add('hidden');
+            document.getElementById('blikArea').classList.remove('hidden');
+        }
+
+        function simulateBankConfirm() {
+            const code = document.getElementById('blikCode').value;
+            if(code.length !== 6) {
+                showToast("Wpisz 6-cyfrowy kod BLIK", "bg-red-500");
+                return;
+            }
+            document.getElementById('blikArea').classList.add('hidden');
+            document.getElementById('bankConfirmArea').classList.remove('hidden');
+
+            // Simulate P2P / Bank App delay (0 scam, no lag)
+            setTimeout(() => {
+                completePurchase();
+            }, 3000);
+        }
+
+        function completePurchase() {
+            const pIndex = db.products.findIndex(x => x.id === activeProductId);
+            if(pIndex > -1) {
+                db.products[pIndex].status = 'sold';
+                db.products[pIndex].tracking = 'paid';
+                db.products[pIndex].buyerId = currentUser.id;
+                db.products[pIndex].buyerDetails = {
+                    name: document.getElementById('chkName').value,
+                    address: document.getElementById('chkAddress').value,
+                    zip: document.getElementById('chkZip').value,
+                    city: document.getElementById('chkCity').value,
+                    phone: document.getElementById('chkPhone').value,
+                };
+                saveDb();
+                showToast("Zakup opłacony! Paczka kupiona pomyślnie.", "bg-green-500");
+                
+                // Reset form
+                document.getElementById('blikArea').classList.add('hidden');
+                document.getElementById('bankConfirmArea').classList.add('hidden');
+                document.getElementById('paymentMethodsContainer').classList.remove('hidden');
+                document.getElementById('blikCode').value = '';
+                
+                navigate('profile');
+                setProfileTab('zakupy');
+            }
+        }
+
+        // ==========================================
+        // PROFILE & TRACKING
+        // ==========================================
+        function renderProfile() {
+            document.getElementById('profileUsername').innerHTML = `${currentUser.username} ${getVerifiedBadge(currentUser)}`;
+            
+            // Tab Zakupy
+            const zakupyList = document.getElementById('myPurchasesList');
+            zakupyList.innerHTML = '';
+            const myPurchases = db.products.filter(p => p.buyerId === currentUser.id);
+            
+            if(myPurchases.length === 0) {
+                zakupyList.innerHTML = `<p class="text-gray-500">Nie kupiłeś jeszcze żadnych paczek.</p>`;
+            } else {
+                myPurchases.forEach(p => {
+                    zakupyList.innerHTML += `
+                        <div class="border rounded-lg p-4">
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="${p.image}" class="w-16 h-16 object-cover rounded">
+                                <div>
+                                    <h4 class="font-bold">${p.title}</h4>
+                                    <p class="text-sm text-gray-500">${formatPrice(p.price)}</p>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded text-sm mb-4 border">
+                                <h5 class="font-bold mb-2">Twoje dane dostawy:</h5>
+                                <p>${p.buyerDetails.name}, ${p.buyerDetails.address}, ${p.buyerDetails.zip} ${p.buyerDetails.city}</p>
+                                <p>Tel: ${p.buyerDetails.phone}</p>
+                            </div>
+                            ${generateTrackingUI(p.tracking)}
+                        </div>
+                    `;
+                });
+            }
+
+            // Tab Paczki (Sprzedaż)
+            const paczkiList = document.getElementById('myPackagesList');
+            paczkiList.innerHTML = '';
+            const myPackages = db.products.filter(p => p.sellerId === currentUser.id);
+
+            if(myPackages.length === 0) {
+                paczkiList.innerHTML = `<p class="text-gray-500">Nie wystawiłeś żadnych paczek.</p>`;
+            } else {
+                myPackages.forEach(p => {
+                    let statusHtml = '';
+                    if(p.status === 'pending') statusHtml = `<span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded">Oczekuje na weryfikację Admina</span>`;
+                    else if(p.status === 'active') statusHtml = `<span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded">Aktywna</span>`;
+                    else statusHtml = `<span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">Sprzedana</span>`;
+
+                    let trackingManagerHtml = '';
+                    if(p.status === 'sold') {
+                        trackingManagerHtml = `
+                            <div class="mt-4 p-4 border rounded bg-blue-50">
+                                <h5 class="font-bold text-sm mb-2">Zarządzaj statusem paczki:</h5>
+                                <select onchange="changeTrackingStatus('${p.id}', this.value)" class="w-full border rounded p-2 text-sm">
+                                    <option value="paid" ${p.tracking === 'paid' ? 'selected' : ''}>Zakup opłacony</option>
+                                    <option value="pending_shipment" ${p.tracking === 'pending_shipment' ? 'selected' : ''}>Oczekuje na nadanie</option>
+                                    <option value="in_transit" ${p.tracking === 'in_transit' ? 'selected' : ''}>W drodze</option>
+                                    <option value="pickup_ready" ${p.tracking === 'pickup_ready' ? 'selected' : ''}>Odbierz Przesyłkę</option>
+                                    <option value="delivered" ${p.tracking === 'delivered' ? 'selected' : ''}>Przesyłka odebrana</option>
+                                </select>
+                            </div>
+                        `;
+                    }
+
+                    paczkiList.innerHTML += `
+                        <div class="border rounded-lg p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-bold">${p.title}</h4>
+                                ${statusHtml}
+                            </div>
+                            <p class="text-sm text-gray-500 mb-2">${formatPrice(p.price)}</p>
+                            ${p.status === 'sold' && p.buyerDetails ? `
+                                <div class="bg-gray-100 p-2 text-xs rounded mb-2">
+                                    <b>Kupujący:</b> ${p.buyerDetails.name}, ${p.buyerDetails.address}, tel: ${p.buyerDetails.phone}
+                                </div>
+                            ` : ''}
+                            ${trackingManagerHtml}
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function setProfileTab(tab) {
+            document.querySelectorAll('.profile-tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`profile-content-${tab}`).classList.remove('hidden');
+            
+            document.getElementById('tab-zakupy').classList.remove('font-bold', 'text-allegro');
+            document.getElementById('tab-paczki').classList.remove('font-bold', 'text-allegro');
+            document.getElementById(`tab-${tab}`).classList.add('font-bold', 'text-allegro');
+        }
+
+        const trackingStages = ['paid', 'pending_shipment', 'in_transit', 'pickup_ready', 'delivered'];
+        const trackingLabels = ['Zakup opłacony', 'Oczekuje na nadanie', 'W drodze', 'Odbierz Przesyłkę', 'Przesyłka odebrana'];
+
+        function generateTrackingUI(currentStatus) {
+            let currentIndex = trackingStages.indexOf(currentStatus);
+            if(currentIndex === -1) return '';
+
+            let html = `<div class="relative flex justify-between items-center w-full mt-6 mb-2">
+                            <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 z-0"></div>
+                            <div class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-green-500 z-0 transition-all duration-500" style="width: ${(currentIndex / (trackingStages.length - 1)) * 100}%"></div>`;
+            
+            for(let i=0; i<trackingStages.length; i++) {
+                let isDone = i <= currentIndex;
+                let isCurrent = i === currentIndex;
+                html += `
+                    <div class="relative z-10 flex flex-col items-center group">
+                        <div class="w-6 h-6 rounded-full border-2 ${isDone ? 'bg-green-500 border-green-500' : 'bg-white border-gray-300'} flex items-center justify-center">
+                            ${isDone ? '<i class="fas fa-check text-white text-[10px]"></i>' : ''}
+                        </div>
+                        <span class="absolute top-8 text-[10px] w-20 text-center ${isCurrent ? 'font-bold text-green-600' : 'text-gray-500'}">${trackingLabels[i]}</span>
+                    </div>
+                `;
+            }
+            html += `</div><div class="h-8"></div>`; // spacer for absolute text
+            return html;
+        }
+
+        function changeTrackingStatus(productId, newStatus) {
+            const pIndex = db.products.findIndex(p => p.id === productId);
+            if(pIndex > -1) {
+                db.products[pIndex].tracking = newStatus;
+                saveDb();
+                showToast("Status przesyłki zaktualizowany!", "bg-blue-500");
+                renderProfile();
+            }
+        }
+
+        // ==========================================
+        // REPORT SYSTEM
+        // ==========================================
+        function openReportModal() {
+            document.getElementById('reportModal').classList.remove('hidden');
+        }
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.add('hidden');
+        }
+        function submitReport() {
+            if(!currentUser) {
+                showToast("Zaloguj się, aby zgłosić.", "bg-red-500");
+                return;
+            }
+            const reason = document.getElementById('reportReason').value;
+            const desc = document.getElementById('reportDesc').value;
+            
+            db.reports.push({
+                id: 'R' + Date.now(),
+                productId: activeProductId,
+                reporterId: currentUser.id,
+                reason: reason,
+                desc: desc,
+                date: new Date().toLocaleString()
+            });
+            saveDb();
+            closeReportModal();
+            showToast("Zgłoszenie wysłane do Administracji.", "bg-green-500");
+        }
+
+        // ==========================================
+        // ADMIN PANEL
+        // ==========================================
+        function renderAdmin() {
+            if(!currentUser || !currentUser.isAdmin) return;
+
+            // Weryfikacja Paczek
+            const pendingQueue = document.getElementById('adminPendingQueue');
+            pendingQueue.innerHTML = '';
+            const pending = db.products.filter(p => p.status === 'pending');
+            
+            if(pending.length === 0) pendingQueue.innerHTML = '<p class="text-gray-500 text-sm">Brak paczek do weryfikacji.</p>';
+            
+            pending.forEach(p => {
+                const seller = db.users.find(u => u.id === p.sellerId);
+                pendingQueue.innerHTML += `
+                    <div class="border p-4 rounded bg-gray-50 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-lg">${p.title} - ${formatPrice(p.price)}</h4>
+                            <p class="text-xs text-gray-600 mb-2">Sprzedawca: ${seller ? seller.username : 'Brak'}</p>
+                            <p class="text-sm mb-4">${p.desc.substring(0,100)}...</p>
+                        </div>
+                        <div class="flex gap-2 border-t pt-2">
+                            <button onclick="verifyPackage('${p.id}', true)" class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 w-full">Zatwierdź</button>
+                            <button onclick="verifyPackage('${p.id}', false)" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 w-full">Usuń paczkę</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Raporty
+            const reportsQueue = document.getElementById('adminReportsQueue');
+            reportsQueue.innerHTML = '';
+            
+            if(db.reports.length === 0) reportsQueue.innerHTML = '<p class="text-gray-500 text-sm">Brak zgłoszeń.</p>';
+
+            db.reports.forEach(r => {
+                const product = db.products.find(p => p.id === r.productId);
+                const seller = product ? db.users.find(u => u.id === product.sellerId) : null;
+                
+                reportsQueue.innerHTML += `
+                    <div class="border border-red-200 p-4 rounded bg-red-50">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-bold text-red-600 uppercase text-xs">${r.reason}</span>
+                            <span class="text-xs text-gray-500">${r.date}</span>
+                        </div>
+                        <p class="text-sm font-bold mb-1">Cel: ${product ? product.title : 'Usunięto'} (ID: ${r.productId})</p>
+                        <p class="text-sm italic mb-3">"${r.desc || 'Brak opisu'}"</p>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="deleteProduct('${r.productId}')" class="bg-red-600 text-white px-2 py-1 rounded text-xs hover:bg-red-800"><i class="fas fa-trash"></i> Usuń Paczkę</button>
+                            ${seller ? `<button onclick="openBanModal('${seller.id}', '${seller.username}')" class="bg-black text-white px-2 py-1 rounded text-xs hover:bg-gray-800"><i class="fas fa-gavel"></i> Zbanuj Sprzedawcę</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function verifyPackage(id, approve) {
+            const pIndex = db.products.findIndex(p => p.id === id);
+            if(pIndex > -1) {
+                if(approve) {
+                    db.products[pIndex].status = 'active';
+                    showToast("Paczka zatwierdzona i widoczna publicznie.");
+                } else {
+                    db.products.splice(pIndex, 1);
+                    showToast("Paczka usunięta.", "bg-red-500");
+                }
+                saveDb();
+                renderAdmin();
+            }
+        }
+
+        function deleteProduct(id) {
+            if(!confirm("Na pewno usunąć tę paczkę?")) return;
+            const pIndex = db.products.findIndex(p => p.id === id);
+            if(pIndex > -1) {
+                db.products.splice(pIndex, 1);
+                // remove reports associated
+                db.reports = db.reports.filter(r => r.productId !== id);
+                saveDb();
+                showToast("Paczka i raporty usunięte.", "bg-red-600");
+                renderAdmin();
+            }
+        }
+
+        function openBanModal(userId, username) {
+            activeBanTarget = userId;
+            document.getElementById('banTargetUser').innerText = `User: ${username}`;
+            document.getElementById('banModal').classList.remove('hidden');
+        }
+        
+        function closeBanModal() {
+            document.getElementById('banModal').classList.add('hidden');
+            activeBanTarget = null;
+        }
+
+        function toggleBanTime() {
+            const type = document.getElementById('banType').value;
+            document.getElementById('banTimeDiv').classList.toggle('hidden', type !== 'time');
+        }
+
+        function executeBan() {
+            if(!activeBanTarget) return;
+            const uIndex = db.users.findIndex(u => u.id === activeBanTarget);
+            if(uIndex > -1) {
+                const type = document.getElementById('banType').value;
+                const reason = document.getElementById('banReason').value || 'Naruszenie regulaminu';
+                const days = document.getElementById('banDays').value;
+                
+                db.users[uIndex].isBanned = true;
+                db.users[uIndex].banReason = type === 'time' ? `Timeban (${days} dni): ${reason}` : `Permaban: ${reason}`;
+                
+                // Hide all their active products
+                db.products.forEach(p => {
+                    if(p.sellerId === activeBanTarget && p.status === 'active') {
+                        p.status = 'pending'; // or completely remove
+                    }
+                });
+
+                saveDb();
+                closeBanModal();
+                showToast("Wyrok wykonany. Użytkownik zbanowany.", "bg-black");
+                renderAdmin();
+            }
+        }
+    </script>
+</body>
+</html>
